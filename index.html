@@ -177,6 +177,30 @@
                         <span id="wrong-count-badge" class="absolute -top-2 -right-4 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                     </button>
                 </div>
+                <!-- User Profile Section -->
+<div class="flex items-center gap-3 ml-4">
+    <div id="user-login" class="hidden">
+        <button onclick="app.showLoginModal()" class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition">
+            <i class="fa-solid fa-user mr-2"></i>Login
+        </button>
+    </div>
+    
+    <div id="user-profile" class="hidden flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-sm" id="user-avatar-letter">
+            U
+        </div>
+        <div class="hidden md:block">
+            <p id="user-display-name" class="text-sm font-semibold text-slate-800 leading-tight">User</p>
+            <p class="text-xs text-slate-500">Local Profile</p>
+        </div>
+        <button onclick="app.switchUser()" class="p-2 text-slate-600 hover:text-teal-600 transition text-sm" title="Switch User">
+            <i class="fa-solid fa-right-left"></i>
+        </button>
+        <button onclick="app.logout()" class="p-2 text-slate-600 hover:text-red-600 transition text-sm" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+    </div>
+</div>
                 <div class="md:hidden flex items-center">
                     <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-600 hover:text-slate-900 focus:outline-none">
                         <i class="fa-solid fa-bars text-2xl"></i>
@@ -1310,6 +1334,44 @@ questionDatabase.forEach(q => {
         document.addEventListener('DOMContentLoaded', app.init);
 
     </script>
+    <!-- Login Modal -->
+<div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+        <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to NEET Mastery</h2>
+        <p class="text-slate-600 mb-6">Create a profile to track your progress</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
+                <input type="text" id="new-user-name" placeholder="Enter your name" 
+                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Email (optional)</label>
+                <input type="email" id="new-user-email" placeholder="For backup only" 
+                    class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition">
+            </div>
+            
+            <div class="flex gap-3 pt-2">
+                <button onclick="app.closeLoginModal()" class="flex-1 px-4 py-3 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 transition">
+                    Cancel
+                </button>
+                <button onclick="app.createUser()" class="flex-1 px-4 py-3 rounded-lg bg-teal-600 text-white font-semibold hover:bg-teal-700 transition">
+                    Start Learning
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-6 pt-6 border-t border-slate-200">
+            <p class="text-sm text-slate-500 mb-3">Existing profiles on this device:</p>
+            <div id="existing-users" class="space-y-2">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
+
