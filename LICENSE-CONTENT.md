@@ -1,0 +1,1 @@
+All educational content, questions, and datasets in this repository are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). You may not use this content for commercial purposes (including ad-supported sites) without explicit permission.
