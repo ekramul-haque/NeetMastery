@@ -107,24 +107,54 @@
         }
 
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Higher than everything */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Login modal specific - cannot be closed without action */
+#login-modal {
+    pointer-events: auto;
+}
+#login-modal .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+#login-modal.active .modal-content {
+    transform: scale(1);
+}
+
+/* Hide main content until logged in */
+body:not(.logged-in) main {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+}
+body:not(.logged-in) nav {
+    filter: blur(5px);
+    pointer-events: none;
+}
         .modal-content {
             background: white;
             padding: 2rem;
@@ -191,73 +221,17 @@
                         Re-Attempt Wrong
                         <span id="wrong-count-badge" class="absolute -top-2 -right-4 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                     </button>
-                </div>
-                <!-- User Profile Section -->
-<div class="flex items-center gap-3 ml-4">
-    <div id="user-login" class="hidden">
-        <button onclick="app.showLoginModal()" class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition">
-            <i class="fa-solid fa-user mr-2"></i>Login
-        </button>
-    </div>
-    
-    <div id="user-profile" class="hidden flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-sm" id="user-avatar-letter">
-            U
-        </div>
-        <div class="hidden md:block">
-            <p id="user-display-name" class="text-sm font-semibold text-slate-800 leading-tight">User</p>
-            <p class="text-xs text-slate-500">Local Profile</p>
-        </div>
-        <button onclick="app.switchUser()" class="p-2 text-slate-600 hover:text-teal-600 transition text-sm" title="Switch User">
-            <i class="fa-solid fa-right-left"></i>
-        </button>
-        <button onclick="app.logout()" class="p-2 text-slate-600 hover:text-red-600 transition text-sm" title="Logout">
-            <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-    </div>
-</div>
-                
-                <!-- User Profile Section -->
-                <div class="flex items-center gap-3 ml-4">
-                    <div id="user-login" class="hidden">
-                        <button onclick="app.showLoginModal()" class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition">
-                            <i class="fa-solid fa-user mr-2"></i>Login
-                        </button>
-                    </div>
-                    
-                    <div id="user-profile" class="hidden flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-sm" id="user-avatar-letter">
+                                                            <!-- User display (shows after login) -->
+                    <div id="nav-user-display" class="hidden flex items-center gap-2 ml-4 pl-4 border-l border-slate-200">
+                        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-sm" id="nav-avatar">
                             U
                         </div>
-                        <div class="hidden md:block">
-                            <p id="user-display-name" class="text-sm font-semibold text-slate-800 leading-tight">User</p>
-                            <p class="text-xs text-slate-500">Local Profile</p>
-                        </div>
-                        <button onclick="app.switchUser()" class="p-2 text-slate-600 hover:text-teal-600 transition text-sm" title="Switch User">
-                            <i class="fa-solid fa-right-left"></i>
-                        </button>
-                        <button onclick="app.logout()" class="p-2 text-slate-600 hover:text-red-600 transition text-sm" title="Logout">
+                        <span id="nav-username" class="text-sm font-medium text-slate-700 hidden md:block">User</span>
+                        <button onclick="app.logout()" class="ml-2 text-slate-400 hover:text-red-500 text-sm" title="Logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
                     </div>
                 </div>
-                <div class="md:hidden flex items-center">
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-600 hover:text-slate-900 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-200">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button onclick="app.checkNavigation('home')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-teal-600 hover:bg-slate-50">Dashboard</button>
-                <button onclick="app.checkNavigation('practice')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-teal-600 hover:bg-slate-50">Practice</button>
-                <button onclick="app.checkNavigation('wrong')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-teal-600 hover:bg-slate-50">Wrong Answers</button>
-            </div>
-        </div>
-    </nav>
-
-    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen">
         
         <!-- VIEW: DASHBOARD -->
         <div id="view-home" class="fade-in space-y-8">
@@ -1377,14 +1351,20 @@ questionDatabase.forEach(q => {
         
         currentUser: null,
         
-        init: () => {
+                init: () => {
             const savedUser = localStorage.getItem('neetCurrentUser');
             if (savedUser) {
+                // User exists - hide modal, show site
                 app.currentUser = JSON.parse(savedUser);
+                document.getElementById('login-modal').classList.remove('active');
+                document.body.classList.add('logged-in');
                 app.showUserProfile();
                 app.loadUserStats();
             } else {
-                app.showLoginButton();
+                // New user - show mandatory login modal
+                document.getElementById('login-modal').classList.add('active');
+                document.body.classList.remove('logged-in');
+                app.renderExistingUsers();
             }
             app.renderDashboard();
             app.updateWrongBadge();
@@ -1401,12 +1381,13 @@ questionDatabase.forEach(q => {
             document.getElementById('login-modal').classList.remove('flex');
         },
         
-        createUser: () => {
+                createUser: () => {
             const name = document.getElementById('new-user-name').value.trim();
             const email = document.getElementById('new-user-email').value.trim();
             
             if (!name) {
-                alert('Please enter your name');
+                alert('Please enter your name to continue');
+                document.getElementById('new-user-name').focus();
                 return;
             }
             
@@ -1422,15 +1403,27 @@ questionDatabase.forEach(q => {
             localStorage.setItem('neetAllUsers', JSON.stringify(users));
             
             app.loginUser(user);
+        },
+            
+            const users = app.getAllUsers();
+            users.push(user);
+            localStorage.setItem('neetAllUsers', JSON.stringify(users));
+            
+            app.loginUser(user);
             app.closeLoginModal();
         },
         
-        loginUser: (user) => {
+                loginUser: (user) => {
             app.currentUser = user;
             localStorage.setItem('neetCurrentUser', JSON.stringify(user));
+            
+            // Hide modal and enable site
+            document.getElementById('login-modal').classList.remove('active');
+            document.body.classList.add('logged-in');
+            
             app.showUserProfile();
             app.loadUserStats();
-            app.showToast(`Welcome, ${user.name}!`, 'success');
+            app.showToast(`Welcome back, ${user.name}!`, 'success');
         },
         
         loadUserStats: () => {
@@ -1467,14 +1460,31 @@ questionDatabase.forEach(q => {
             return saved ? JSON.parse(saved) : [];
         },
         
-        renderExistingUsers: () => {
+               renderExistingUsers: () => {
             const container = document.getElementById('existing-users');
+            const section = document.getElementById('existing-users-section');
             const users = app.getAllUsers();
             
             if (users.length === 0) {
-                container.innerHTML = '<p class="text-sm text-slate-400 italic">No existing profiles</p>';
+                section.classList.add('hidden');
                 return;
             }
+            
+            section.classList.remove('hidden');
+            container.innerHTML = users.map(u => `
+                <button onclick='app.loginUser(${JSON.stringify(u)})' 
+                    class="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 transition text-left">
+                    <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold">
+                        ${u.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-slate-800">${u.name}</p>
+                        ${u.email ? `<p class="text-xs text-slate-500">${u.email}</p>` : ''}
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                </button>
+            `).join('');
+        },
             
             container.innerHTML = users.map(u => `
                 <button onclick='app.loginUser(${JSON.stringify(u)})' 
@@ -1490,19 +1500,22 @@ questionDatabase.forEach(q => {
             `).join('');
         },
         
-        showUserProfile: () => {
+                showUserProfile: () => {
             if (!app.currentUser) return;
             
-            document.getElementById('user-login').classList.add('hidden');
-            document.getElementById('user-profile').classList.remove('hidden');
-            
-            document.getElementById('user-display-name').innerText = app.currentUser.name;
-            document.getElementById('user-avatar-letter').innerText = app.currentUser.name.charAt(0).toUpperCase();
+            // Show in nav
+            const navDisplay = document.getElementById('nav-user-display');
+            if (navDisplay) {
+                navDisplay.classList.remove('hidden');
+                document.getElementById('nav-username').innerText = app.currentUser.name;
+                document.getElementById('nav-avatar').innerText = app.currentUser.name.charAt(0).toUpperCase();
+            }
         },
         
-        showLoginButton: () => {
-            document.getElementById('user-login').classList.remove('hidden');
-            document.getElementById('user-profile').classList.add('hidden');
+                showLoginButton: () => {
+            // This shouldn't happen with mandatory login, but just in case
+            document.getElementById('login-modal').classList.add('active');
+            document.body.classList.remove('logged-in');
         },
         
         switchUser: () => {
@@ -1510,6 +1523,8 @@ questionDatabase.forEach(q => {
         },
         
         logout: () => {
+                    // Hide nav user display
+                                document.getElementById('nav-user-display').classList.add('hidden');
             app.currentUser = null;
             localStorage.removeItem('neetCurrentUser');
             app.showLoginButton();
@@ -1538,38 +1553,36 @@ questionDatabase.forEach(q => {
 
     </script>
    
-    <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to NEET Mastery</h2>
-            <p class="text-slate-600 mb-6">Create a profile to track your progress</p>
+        <!-- Mandatory Login Modal - Cannot be closed without login -->
+    <div id="login-modal" class="modal-overlay active">
+        <div class="modal-content">
+            <div class="mb-6">
+                <i class="fa-solid fa-user-doctor text-5xl text-teal-600 mb-4"></i>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to NEET Mastery</h2>
+                <p class="text-slate-600">Create a profile to start your NEET preparation journey</p>
+            </div>
             
-            <div class="space-y-4">
+            <div class="space-y-4 text-left">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
-                    <input type="text" id="new-user-name" placeholder="Enter your name" 
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Your Name *</label>
+                    <input type="text" id="new-user-name" placeholder="Enter your full name" 
                         class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition">
                 </div>
                 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Email (optional)</label>
-                    <input type="email" id="new-user-email" placeholder="For backup only" 
+                    <input type="email" id="new-user-email" placeholder="For progress backup" 
                         class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition">
                 </div>
                 
-                <div class="flex gap-3 pt-2">
-                    <button onclick="app.closeLoginModal()" class="flex-1 px-4 py-3 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 transition">
-                        Cancel
-                    </button>
-                    <button onclick="app.createUser()" class="flex-1 px-4 py-3 rounded-lg bg-teal-600 text-white font-semibold hover:bg-teal-700 transition">
-                        Start Learning
-                    </button>
-                </div>
+                <button onclick="app.createUser()" class="w-full px-4 py-3 rounded-lg bg-teal-600 text-white font-semibold hover:bg-teal-700 transition mt-4">
+                    <i class="fa-solid fa-play mr-2"></i>Start Learning
+                </button>
             </div>
             
-            <div class="mt-6 pt-6 border-t border-slate-200">
-                <p class="text-sm text-slate-500 mb-3">Existing profiles on this device:</p>
-                <div id="existing-users" class="space-y-2">
+            <div id="existing-users-section" class="mt-6 pt-6 border-t border-slate-200 hidden">
+                <p class="text-sm text-slate-500 mb-3">Or select existing profile:</p>
+                <div id="existing-users" class="space-y-2 max-h-32 overflow-y-auto">
                     <!-- Populated by JS -->
                 </div>
             </div>
@@ -1578,5 +1591,6 @@ questionDatabase.forEach(q => {
 </body>
 
 </html>
+
 
 
