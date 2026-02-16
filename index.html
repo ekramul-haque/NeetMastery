@@ -256,7 +256,6 @@
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <button onclick="app.checkNavigation('home')" class="nav-link text-slate-600 hover:text-teal-600 font-medium transition">Dashboard</button>
-                    <button onclick="app.checkNavigation('practice')" class="nav-link text-slate-600 hover:text-teal-600 font-medium transition">Practice</button>
                     <button onclick="app.checkNavigation('wrong')" class="nav-link text-slate-600 hover:text-teal-600 font-medium transition relative">
                         Re-Attempt Wrong
                         <span id="wrong-count-badge" class="absolute -top-2 -right-4 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
@@ -277,9 +276,9 @@
     </nav>
 
     <main class="pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        
-        <!-- VIEW: DASHBOARD -->
+                <!-- VIEW: DASHBOARD -->
         <div id="view-home" class="fade-in space-y-8">
+            <!-- Stats Row -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="glass-panel p-6 rounded-2xl shadow-sm hover-card border-l-4 border-teal-500">
                     <div class="flex justify-between items-start">
@@ -334,56 +333,10 @@
                 </div>
             </div>
 
-            <div class="glass-panel p-8 rounded-2xl shadow-lg">
-                <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                    <i class="fa-solid fa-chart-pie mr-3 text-teal-600"></i> Subject Mastery
-                </h2>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg text-slate-700"><i class="fa-solid fa-atom mr-2 text-blue-500"></i>Physics</h3>
-                            <span class="text-sm font-semibold text-slate-500" id="phy-score">0% Strong</span>
-                        </div>
-                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div id="phy-bar" class="h-full bg-blue-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                        <div id="phy-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg text-slate-700"><i class="fa-solid fa-flask mr-2 text-pink-500"></i>Chemistry</h3>
-                            <span class="text-sm font-semibold text-slate-500" id="chem-score">0% Strong</span>
-                        </div>
-                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div id="chem-bar" class="h-full bg-pink-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                        <div id="chem-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg text-slate-700"><i class="fa-solid fa-dna mr-2 text-green-500"></i>Biology</h3>
-                            <span class="text-sm font-semibold text-slate-500" id="bio-score">0% Strong</span>
-                        </div>
-                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
-                            <div id="bio-bar" class="h-full bg-green-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                        <div id="bio-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW: PRACTICE SELECTION -->
-        <div id="view-practice" class="hidden fade-in space-y-8">
-            <div class="text-center mb-10">
-                <h1 class="text-4xl font-bold text-slate-800 mb-4">Select Practice Mode</h1>
-                <p class="text-slate-600 max-w-2xl mx-auto">Choose how you want to practice. Year-wise papers simulate real exam conditions, while Chapter-wise helps you target specific weaknesses.</p>
-            </div>
-
+            <!-- Practice Options -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div onclick="app.showYearSelector()" class="glass-panel p-8 rounded-2xl shadow-lg hover-card cursor-pointer group relative overflow-hidden">
+                <!-- Year Wise Card -->
+                <div onclick="app.showYearSelectorHome()" class="glass-panel p-8 rounded-2xl shadow-lg hover-card cursor-pointer group relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
                         <i class="fa-solid fa-calendar-days text-9xl"></i>
                     </div>
@@ -399,7 +352,8 @@
                     </div>
                 </div>
 
-                <div onclick="app.showChapterSelector()" class="glass-panel p-8 rounded-2xl shadow-lg hover-card cursor-pointer group relative overflow-hidden">
+                <!-- Chapter Wise Card -->
+                <div onclick="app.showSubjectSelectorHome()" class="glass-panel p-8 rounded-2xl shadow-lg hover-card cursor-pointer group relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
                         <i class="fa-solid fa-book-open text-9xl"></i>
                     </div>
@@ -416,21 +370,95 @@
                 </div>
             </div>
 
-            <div id="year-selector" class="hidden mt-8 glass-panel p-6 rounded-2xl shadow-lg">
-                <h3 class="text-xl font-bold mb-4">Select Year & Exam</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4" id="year-grid"></div>
+            <!-- Year Selector (Hidden by default) -->
+            <div id="year-selector-home" class="hidden glass-panel p-6 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Select Year & Exam</h3>
+                    <button onclick="app.hideSelectors()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4" id="year-grid-home"></div>
             </div>
 
-            <div id="chapter-selector" class="hidden mt-8 glass-panel p-6 rounded-2xl shadow-lg">
-                <div class="flex space-x-4 mb-6 border-b border-slate-200">
-                    <button onclick="app.filterChapters('Physics')" class="pb-2 px-4 font-semibold text-blue-600 border-b-2 border-blue-600">Physics</button>
-                    <button onclick="app.filterChapters('Chemistry')" class="pb-2 px-4 font-semibold text-slate-500 hover:text-pink-600">Chemistry</button>
-                    <button onclick="app.filterChapters('Biology')" class="pb-2 px-4 font-semibold text-slate-500 hover:text-green-600">Biology</button>
+            <!-- Subject/Chapter Selector (Hidden by default) -->
+            <div id="subject-selector-home" class="hidden glass-panel p-6 rounded-2xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">Select Subject</h3>
+                    <button onclick="app.hideSelectors()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="chapter-grid"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <button onclick="app.showChaptersForSubject('Physics')" class="p-6 bg-blue-50 border-2 border-blue-200 rounded-xl hover:border-blue-500 hover:bg-blue-100 transition text-center">
+                        <i class="fa-solid fa-atom text-4xl text-blue-600 mb-3"></i>
+                        <h4 class="font-bold text-blue-800">Physics</h4>
+                    </button>
+                    <button onclick="app.showChaptersForSubject('Chemistry')" class="p-6 bg-pink-50 border-2 border-pink-200 rounded-xl hover:border-pink-500 hover:bg-pink-100 transition text-center">
+                        <i class="fa-solid fa-flask text-4xl text-pink-600 mb-3"></i>
+                        <h4 class="font-bold text-pink-800">Chemistry</h4>
+                    </button>
+                    <button onclick="app.showChaptersForSubject('Biology')" class="p-6 bg-green-50 border-2 border-green-200 rounded-xl hover:border-green-500 hover:bg-green-100 transition text-center">
+                        <i class="fa-solid fa-dna text-4xl text-green-600 mb-3"></i>
+                        <h4 class="font-bold text-green-800">Biology</h4>
+                    </button>
+                </div>
+                
+                <!-- Chapters Grid -->
+                <div id="chapters-grid-home" class="hidden border-t border-slate-200 pt-6">
+                    <h4 class="font-bold text-slate-700 mb-4" id="selected-subject-title">Chapters</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="chapters-list-home"></div>
+                </div>
+            </div>
+
+            <!-- Subject Mastery Section (Clickable) -->
+            <div class="glass-panel p-8 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                    <i class="fa-solid fa-chart-pie mr-3 text-teal-600"></i> Subject Mastery
+                </h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Physics - Clickable -->
+                    <div onclick="app.showChaptersForSubject('Physics')" class="space-y-4 cursor-pointer group hover:bg-blue-50 p-4 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-lg text-slate-700 group-hover:text-blue-700"><i class="fa-solid fa-atom mr-2 text-blue-500"></i>Physics</h3>
+                            <span class="text-sm font-semibold text-slate-500" id="phy-score">0% Strong</span>
+                        </div>
+                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div id="phy-bar" class="h-full bg-blue-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                        </div>
+                        <div id="phy-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
+                        <p class="text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition">Click to practice chapters <i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+
+                    <!-- Chemistry - Clickable -->
+                    <div onclick="app.showChaptersForSubject('Chemistry')" class="space-y-4 cursor-pointer group hover:bg-pink-50 p-4 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-lg text-slate-700 group-hover:text-pink-700"><i class="fa-solid fa-flask mr-2 text-pink-500"></i>Chemistry</h3>
+                            <span class="text-sm font-semibold text-slate-500" id="chem-score">0% Strong</span>
+                        </div>
+                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div id="chem-bar" class="h-full bg-pink-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                        </div>
+                        <div id="chem-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
+                        <p class="text-xs text-pink-600 font-medium opacity-0 group-hover:opacity-100 transition">Click to practice chapters <i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+
+                    <!-- Biology - Clickable -->
+                    <div onclick="app.showChaptersForSubject('Biology')" class="space-y-4 cursor-pointer group hover:bg-green-50 p-4 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-lg text-slate-700 group-hover:text-green-700"><i class="fa-solid fa-dna mr-2 text-green-500"></i>Biology</h3>
+                            <span class="text-sm font-semibold text-slate-500" id="bio-score">0% Strong</span>
+                        </div>
+                        <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div id="bio-bar" class="h-full bg-green-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                        </div>
+                        <div id="bio-chapters" class="grid grid-cols-1 gap-2 text-sm"></div>
+                        <p class="text-xs text-green-600 font-medium opacity-0 group-hover:opacity-100 transition">Click to practice chapters <i class="fa-solid fa-arrow-right"></i></p>
+                    </div>
+                </div>
             </div>
         </div>
-
+        
         <!-- VIEW: MODE SELECTION -->
         <div id="view-mode-select" class="hidden fade-in max-w-4xl mx-auto">
             <div class="text-center mb-10">
@@ -772,7 +800,6 @@
                 appState.currentView = viewId;
                 
                 if(viewId === 'home') app.renderDashboard();
-                if(viewId === 'practice') app.resetPracticeView();
                 if(viewId === 'wrong') app.renderWrongAttempts();
             },
 
@@ -1433,6 +1460,84 @@
                 app.saveStats();
                 app.renderWrongAttempts();
             },
+                        // ==========================================
+            // NEW HOME PAGE NAVIGATION FUNCTIONS
+            // ==========================================
+            
+            showYearSelectorHome: () => {
+                // Hide other selectors
+                document.getElementById('subject-selector-home').classList.add('hidden');
+                document.getElementById('chapters-grid-home').classList.add('hidden');
+                
+                const grid = document.getElementById('year-grid-home');
+                grid.innerHTML = '';
+                
+                const years = typeof questionDatabase !== 'undefined' 
+                    ? [...new Set(questionDatabase.map(q => q.year))].sort((a, b) => b - a)
+                    : [];
+                
+                if (years.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-slate-500">No year-wise data available</p>';
+                } else {
+                    years.forEach(year => {
+                        grid.innerHTML += `
+                            <button onclick="app.prepareTest('year', '${year}')" class="p-3 bg-white border border-slate-200 rounded-lg hover:bg-teal-50 hover:border-teal-500 transition font-semibold text-slate-700 shadow-sm">
+                                ${year}
+                            </button>
+                        `;
+                    });
+                }
+                document.getElementById('year-selector-home').classList.remove('hidden');
+                document.getElementById('year-selector-home').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            },
+
+            showSubjectSelectorHome: () => {
+                // Hide year selector
+                document.getElementById('year-selector-home').classList.add('hidden');
+                document.getElementById('chapters-grid-home').classList.add('hidden');
+                document.getElementById('subject-selector-home').classList.remove('hidden');
+                document.getElementById('subject-selector-home').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            },
+
+            showChaptersForSubject: (subject) => {
+                // Hide year selector if open
+                document.getElementById('year-selector-home').classList.add('hidden');
+                document.getElementById('subject-selector-home').classList.remove('hidden');
+                
+                document.getElementById('selected-subject-title').innerText = `${subject} Chapters`;
+                const grid = document.getElementById('chapters-list-home');
+                grid.innerHTML = '';
+                
+                const subjectChapters = chapters[subject] || [];
+                
+                if (subjectChapters.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-slate-500">No chapters available</p>';
+                } else {
+                    subjectChapters.forEach(chap => {
+                        const count = typeof questionDatabase !== 'undefined' 
+                            ? questionDatabase.filter(q => q.subject === subject && q.chapter === chap).length 
+                            : 0;
+                        grid.innerHTML += `
+                            <button onclick="app.prepareTest('chapter', '${subject}-${chap}')" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:shadow-md hover:border-purple-500 transition group text-left">
+                                <div>
+                                    <span class="font-medium text-slate-700 block">${chap}</span>
+                                    <span class="text-xs text-slate-400">${count} questions</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-purple-500"></i>
+                            </button>
+                        `;
+                    });
+                }
+                
+                document.getElementById('chapters-grid-home').classList.remove('hidden');
+                document.getElementById('chapters-grid-home').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            },
+
+            hideSelectors: () => {
+                document.getElementById('year-selector-home').classList.add('hidden');
+                document.getElementById('subject-selector-home').classList.add('hidden');
+                document.getElementById('chapters-grid-home').classList.add('hidden');
+            },
 
             // ==========================================
             // USER PROFILE MANAGEMENT (LOCALSTORAGE)
@@ -1553,3 +1658,4 @@
     </script>
 </body>
 </html>
+
